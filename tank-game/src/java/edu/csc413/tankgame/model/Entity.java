@@ -25,6 +25,11 @@ public abstract class Entity {
         }
     }
 
+    public void moveDis(GameState gameState, double dx, double dy){
+        setX(getX() + dx);
+        setY(getY() + dy);
+    }
+
 
     public String getId() {
         return id;

@@ -1,6 +1,6 @@
 package edu.csc413.tankgame;
 
-import edu.csc413.tankgame.model.*;;
+import edu.csc413.tankgame.model.*;
 import edu.csc413.tankgame.view.MainView;
 import edu.csc413.tankgame.view.RunGameView;
 import edu.csc413.tankgame.view.StartMenuView;
@@ -120,189 +120,35 @@ public class GameDriver {
 
 
 
-    private boolean entitiesOverlap(Entity entity1, Entity entity2) {
-        return entity1.getX() < entity2.getXBound() &&
-                entity1.getXBound() > entity2.getX() &&
-                entity1.getY() < entity2.getYBound() &&
-                entity1.getYBound() > entity2.getY();
-    }
-
-
-    private void tankVsTank(Tank tank1, Tank tank2) {
-
-        if (entitiesOverlap(tank1, tank2)) {
-            double dis1 = (tank1.getXBound() - tank2.getX());
-            double dis2 = (tank2.getXBound() - tank1.getX());
-            double dis3 = (tank1.getYBound() - tank2.getY());
-            double dis4 = (tank2.getYBound() - tank1.getY());
-
-            double minDis = dis1;
-            if (minDis > dis2) {
-                minDis = dis2;
-            }
-            if (minDis > dis3) {
-                minDis = dis3;
-            }
-            if (minDis > dis4) {
-                minDis = dis4;
-            }
-
-
-            if (minDis == dis1) {
-                tank1.moveDis(gameState, -dis1 / 2, 0);
-                tank2.moveDis(gameState, dis1 / 2, 0);
-            }
-            if (minDis == dis2) {
-                tank1.moveDis(gameState, dis2 / 2, 0);
-                tank2.moveDis(gameState, -dis2 / 2, 0);
-            }
-            if (minDis == dis3) {
-                tank1.moveDis(gameState, 0, dis3 / 2);
-                tank2.moveDis(gameState, 0, -dis3 / 2);
-            }
-            if (minDis == dis4) {
-                tank1.moveDis(gameState, 0, -dis4 / 2);
-                tank2.moveDis(gameState, 0, dis4 / 2);
-            }
-        }
-    }
-
-
-    private void tankVsShell(Tank tank1, Shell shell1) {
-
-        if (!(tank1.getId()).equals(shell1.getTankId()) && entitiesOverlap(tank1, shell1)) {
-            tank1.reduceHealth(gameState);
-            shell1.reduceHealth(gameState);
-        }
-
-    }
-
-
-    private void shellVsTank(Shell shell1, Tank tank1) {
-        if (!(tank1.getId()).equals(shell1.getTankId()) && entitiesOverlap(shell1, tank1)) {
-            shell1.reduceHealth(gameState);
-            tank1.reduceHealth(gameState);
-            runGameView.addAnimation(RunGameView.BIG_EXPLOSION_ANIMATION, RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
-                    shell1.getX(), tank1.getY());
-
-        }
-    }
-
-
-    private void tankVsWall(Tank tank1, Wall wall1) {
-
-
-        if (entitiesOverlap(tank1, wall1)) {
-
-            double dis1 = (tank1.getXBound() - wall1.getX());
-            double dis2 = (wall1.getXBound() - tank1.getX());
-            double dis3 = (tank1.getYBound() - wall1.getY());
-            double dis4 = (wall1.getYBound() - tank1.getY());
-
-
-            double minDis = dis1;
-            if (minDis > dis2) {
-                minDis = dis2;
-            }
-            if (minDis > dis3) {
-                minDis = dis3;
-            }
-            if (minDis > dis4) {
-                minDis = dis4;
-            }
-            if (minDis == dis1) {
-
-                tank1.moveDis(gameState, -dis1, 0);
-
-            } else if (minDis == dis2) {
-
-                tank1.moveDis(gameState, dis2, 0);
-
-            } else if (minDis == dis3) {
-
-                tank1.moveDis(gameState, 0, dis3);
-
-            } else if (minDis == dis4) {
-
-                tank1.moveDis(gameState, 0, -dis4);
-
-            }
-
-
-        }
-
-    }
-
-
-
-    private void shellVsShell(Shell shell1, Shell shell2) {
-        if (entitiesOverlap(shell1, shell2)) {
-            shell1.reduceHealth(gameState);
-            shell2.reduceHealth(gameState);
-            runGameView.addAnimation(RunGameView.SHELL_EXPLOSION_ANIMATION,RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
-                    shell1.getX(), shell2.getY());
-        }
-    }
-
-    private void wallVsShell(Wall wall1, Shell shell1){
-        if(entitiesOverlap( wall1, shell1)){
-            wall1.reduceHealth(gameState);
-            shell1.reduceHealth(gameState);
-
-        }
-    }
-
-    private void shellVsWall(Shell shell1, Wall wall1){
-        if(entitiesOverlap(shell1, wall1)){
-            shell1.reduceHealth(gameState);
-            wall1.reduceHealth(gameState);
-            runGameView.addAnimation(RunGameView.BIG_EXPLOSION_ANIMATION,RunGameView.SHELL_EXPLOSION_FRAME_DELAY,
-                    shell1.getX(), wall1.getY());
-
-        }
-    }
-
-
     private void handleCollision(Entity entity1, Entity entity2, GameState gameState) {
 
         if (entity1 instanceof Tank && entity2 instanceof Tank) {
 
-            tankVsTank((Tank) entity1, (Tank) entity2);
+            Context context = new Context(new TankTankCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
 
         } else if (entity1 instanceof Tank && entity2 instanceof Shell) {
 
-            tankVsShell((Tank) entity1, (Shell) entity2);
+            Context context = new Context(new TankShellCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
 
-        } else if (entity1 instanceof Shell && entity2 instanceof Tank) {
+        }  else if (entity1 instanceof Tank && entity2 instanceof Wall) {
 
-            shellVsTank((Shell) entity1, (Tank) entity2);
+            Context context = new Context(new TankWallCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
 
-        } else if (entity1 instanceof Tank && entity2 instanceof Wall) {
+        }  else if (entity1 instanceof Shell && entity2 instanceof Shell) {
 
-            tankVsWall((Tank) entity1, (Wall) entity2);
-
-        } else if (entity1 instanceof Wall && entity2 instanceof Tank) {
-
-            //wallVsTank((Wall) entity1, (Tank) entity2);
-
-        } else if (entity1 instanceof Shell && entity2 instanceof Shell) {
-
-            shellVsShell((Shell) entity1, (Shell) entity2);
-
-        } else if (entity1 instanceof Wall && entity2 instanceof Shell) {
-
-            wallVsShell( (Wall) entity1, (Shell) entity2);
+            Context context = new Context(new ShellShellCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
 
         } else if (entity1 instanceof Shell && entity2 instanceof Wall) {
 
-            shellVsWall((Shell) entity1, (Wall) entity2);
+            Context context = new Context(new ShellWallCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
+
         }
     }
-
-
-
-
-
 
     // TODO: Implement.
     // update should handle one frame of gameplay. All tanks and shells move one step, and all drawn entities
@@ -317,14 +163,13 @@ public class GameDriver {
 
         //Ask all tanks, shells, etc to move
         for (Entity entity : gameState.getEntities()) {
-            entity.move(gameState);
-
+                   entity.move(gameState);
         }
 
         //Ask all tanks, shells, etc to check bounds
 
         for (Entity entity : gameState.getEntities()) {
-            entity.adjustForBoundary(gameState);
+                entity.adjustForBoundary(gameState);
         }
 
         //Check collisions
@@ -364,15 +209,12 @@ public class GameDriver {
             gameState.removeEntity(entity);
             if (entity.getId().equals(GameState.PLAYER_TANK_ID)) {
                 isAlivePlayerTank = false;
-                // update player tank status
             }
             else if (entity.getId().equals(GameState.AI_TANK_ID)) {
               isAliveAiTank = false;
-                // update player tank status
             }
             else if (entity.getId().equals(GameState.CUSHION_AI_TANK_ID)) {
                 isAliveCushionAiTank = false;
-                // update player tank status
             }
 
         }

@@ -68,8 +68,6 @@ public class CushionAITank extends Tank {
             moveBackward();
         }
 
-
-
     }
 
 }

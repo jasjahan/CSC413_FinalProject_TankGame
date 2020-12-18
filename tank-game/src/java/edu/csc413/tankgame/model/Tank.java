@@ -23,10 +23,7 @@ public abstract class Tank extends Entity {
         gameState.addNewEntity(shell);
     }
 
-    public void moveDis(GameState gameState, double dx, double dy){
-        setX(getX() + dx);
-        setY(getY() + dy);
-    }
+
 
     public double getXBound() {
         return getX() + 55.0 ;
