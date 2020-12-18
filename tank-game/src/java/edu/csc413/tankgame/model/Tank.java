@@ -1,5 +1,7 @@
 package edu.csc413.tankgame.model;
 
+import edu.csc413.tankgame.view.RunGameView;
+
 /**
  * Model class representing a tank in the game. A tank has a position and an angle. It has a movement speed and a turn
  * speed, both represented below as constants.
@@ -7,13 +9,32 @@ package edu.csc413.tankgame.model;
 // TODO: Notice that Tank has a lot in common with Shell. For full credit, you will need to find a way to share code
 // between the two classes so that the logic for e.g. moveForward, etc. are not duplicated.
 public abstract class Tank extends Entity {
-    private static final double MOVEMENT_SPEED = 2.0;
-    private static final double TURN_SPEED = Math.toRadians(3.0);
+    RunGameView runGameView = new RunGameView();
+    private static final int initialHealth = 50;
 
-    public Tank(String id, double x, double y, double angle){
-        super(id, x, y, angle);
+
+
+    public Tank(String id, double x, double y, double angle, double MOVEMENT_SPEED) {
+        super(id, x, y, angle, MOVEMENT_SPEED, initialHealth);
     }
 
+    protected void shoot(GameState gameState) {
+        Shell shell = new Shell(getShellX(), getShellY(), getAngle(), getMOVEMENT_SPEED(), this.getId()  );
+        gameState.addNewEntity(shell);
+    }
+
+    public void moveDis(GameState gameState, double dx, double dy){
+        setX(getX() + dx);
+        setY(getY() + dy);
+    }
+
+    public double getXBound() {
+        return getX() + 55.0 ;
+    }
+
+    public double getYBound() {
+        return getY() + 55.0;
+    }
 
     // The following methods will be useful for determining where a shell should be spawned when it
     // is created by this tank. It needs a slight offset so it appears from the front of the tank,

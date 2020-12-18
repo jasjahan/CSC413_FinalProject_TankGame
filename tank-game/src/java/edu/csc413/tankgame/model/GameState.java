@@ -23,6 +23,9 @@ public class GameState {
 
     public static final String PLAYER_TANK_ID = "player-tank";
     public static final String AI_TANK_ID = "ai-tank";
+    public static final String CUSHION_AI_TANK_ID = "cushion-ai-tank";
+
+
     // TODO: Feel free to add more tank IDs if you want to support multiple AI tanks! Just make sure they're unique.
 
     // TODO: Implement.
@@ -30,16 +33,127 @@ public class GameState {
     // instance variables, constructors, and methods are needed.
 
 
-    private final List<Entity> entities= new ArrayList<>();
+    private boolean upPressed = false;
+    private boolean downPressed = false;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private boolean spacePressed = false;
+    private boolean escPressed = false;
 
-    public void addEntity(Entity tank){
-        entities.add(tank);
-    }
 
-    public List<Entity> getEntities(){
+    private final List<Entity> entities = new ArrayList<>();
+
+    public List<Entity> getEntities() {
         return entities;
     }
 
+
+    public Entity getEntity(String playerTankId) {
+        for (Entity entity : getEntities()) {
+            if (entity.getId().equals(playerTankId)) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+
+    private final List<Entity> deadEntities = new ArrayList<>();
+
+    public void reset(){
+        entities.clear();
+        deadEntities.clear();
+    }
+
+    public void addDeadEntity(Entity entity) {
+        deadEntities.add(entity);
+    }
+
+    public void clearDeadEntities() {
+        deadEntities.clear();
+    }
+
+    public List<Entity> getDeadEntities() {
+        return deadEntities;
+    }
+
+
+    private final List<Entity> newEntities = new ArrayList<>();
+
+    public void addNewEntity(Entity entity) {
+        newEntities.add(entity);
+    }
+
+    public void clearNewEntities() {
+        newEntities.clear();
+    }
+
+    public List<Entity> getNewEntities() {
+        return newEntities;
+    }
+
+
+    public void addEntity(Entity tank) {
+        entities.add(tank);
+    }
+
+    public void removeEntity(Entity tank) {
+        entities.remove(tank);
+    }
+
+
+    public boolean isUpPressed() {
+        return upPressed;
+    }
+
+    public void setUpPressed(boolean upPressed) {
+        this.upPressed = upPressed;
+    }
+
+
+    public boolean isDownPressed() {
+        return downPressed;
+    }
+
+    public void setDownPressed(boolean downPressed) {
+        this.downPressed = downPressed;
+    }
+
+
+    public boolean isLeftPressed() {
+        return leftPressed;
+    }
+
+    public void setLeftPressed(boolean leftPressed) {
+        this.leftPressed = leftPressed;
+    }
+
+
+    public boolean isRightPressed() {
+        return rightPressed;
+    }
+
+    public void setRightPressed(boolean rightPressed) {
+        this.rightPressed = rightPressed;
+    }
+
+
+    public boolean isSpacePressed() {
+        return spacePressed;
+    }
+
+    public void setSpacePressed(boolean spacePressed) {
+        this.spacePressed = spacePressed;
+    }
+
+
+    public boolean isEscPressed() {
+        return escPressed;
+    }
+
+    public void setEscPressed(boolean escPressed) {
+        this.escPressed = escPressed;
+    }
 
 
 }

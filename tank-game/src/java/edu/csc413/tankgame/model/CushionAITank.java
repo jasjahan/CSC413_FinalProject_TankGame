@@ -1,8 +1,10 @@
 package edu.csc413.tankgame.model;
 
-public class AiTank extends Tank {
+public class CushionAITank extends Tank {
+
     private int coolDown;
-    public AiTank(String id, double x, double y, double angle, double MOVEMENT_SPEED) {
+
+    public CushionAITank(String id, double x, double y, double angle, double MOVEMENT_SPEED) {
         super(id, x, y, angle, MOVEMENT_SPEED);
         coolDown = 200;
     }
@@ -19,7 +21,6 @@ public class AiTank extends Tank {
             setY(GameState.TANK_Y_UPPER_BOUND);
         }
     }
-
 
     @Override
     public void move(GameState gameState) {
@@ -67,5 +68,8 @@ public class AiTank extends Tank {
             moveBackward();
         }
 
+
+
     }
+
 }

@@ -15,7 +15,7 @@ import java.net.URL;
  * StartMenuView is the view representing the start menu screen as well as the end menu screen. The two menu screens are
  * extremely similar, as they only have one minor difference -- the text of the first button showing as "Start Game" vs
  * "Restart Game".
- *
+ * <p>
  * StartMenuView is responsible for setting up the start game and exit buttons and their corresponding listeners so that
  * clicking on the buttons will lead to the appropriate corresponding actions.
  */
@@ -37,7 +37,7 @@ public class StartMenuView extends JPanel {
     // You'll need to provide a way for GameDriver to respond to button presses in this view. Note that below, we add
     // null ActionListeners to the buttons, which don't do anything. How can we change that to be an ActionListener that
     // directs us back to the code in GameDriver?
-    public StartMenuView(String startButtonText, GameDriver.PrintListener listener ) {
+    public StartMenuView(String startButtonText, GameDriver.PrintListener listener) {
         URL imageUrl = getClass().getClassLoader().getResource(START_MENU_IMAGE_FILE);
         if (imageUrl == null) {
             throw new RuntimeException("Unable to create an image URL from: " + START_MENU_IMAGE_FILE);

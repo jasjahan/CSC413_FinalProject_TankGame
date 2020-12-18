@@ -1,9 +1,11 @@
 package edu.csc413.tankgame.view;
 
 import edu.csc413.tankgame.GameDriver;
+import edu.csc413.tankgame.GameKeyListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 
 /**
@@ -12,7 +14,9 @@ import java.awt.event.WindowEvent;
  * is also registered to listen for keyboard events.
  */
 public class MainView {
-    /** The different screens that can be shown. */
+    /**
+     * The different screens that can be shown.
+     */
     public enum Screen {
         START_MENU_SCREEN("start"),
         RUN_GAME_SCREEN("game"),
@@ -38,7 +42,7 @@ public class MainView {
     // MainView is responsible for assigning listeners to various UI components (like buttons and keyboard input).
     // However, we want to return control to GameDriver when those events happen. How can we have listeners that directs
     // us back to the code in GameDriver?
-    public MainView(GameDriver.PrintListener listener ) {
+    public MainView(GameDriver.PrintListener listener, GameKeyListener listener1) {
         mainJFrame = new JFrame();
         mainJFrame.setVisible(false);
         mainJFrame.setResizable(false);
@@ -46,7 +50,8 @@ public class MainView {
         mainJFrame.setLocationRelativeTo(null);
         mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //TODO
-        mainJFrame.addKeyListener(null);
+        //KeyListener listener1 = new KeyBoardListener();
+        mainJFrame.addKeyListener(listener1);
 
         mainPanel = new JPanel();
         mainPanelLayout = new CardLayout();
@@ -72,7 +77,9 @@ public class MainView {
         return runGameView;
     }
 
-    /** Changes the screen that is currently showing. */
+    /**
+     * Changes the screen that is currently showing.
+     */
     public void setScreen(Screen screen) {
         mainJFrame.setVisible(false);
 
@@ -86,7 +93,9 @@ public class MainView {
         mainJFrame.setVisible(true);
     }
 
-    /** Ends the program. */
+    /**
+     * Ends the program.
+     */
     public void closeGame() {
         mainJFrame.dispatchEvent(new WindowEvent(mainJFrame, WindowEvent.WINDOW_CLOSING));
     }

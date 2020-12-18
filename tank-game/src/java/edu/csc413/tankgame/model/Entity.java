@@ -5,31 +5,64 @@ public abstract class Entity {
     private double x;
     private double y;
     private double angle;
+    private final double MOVEMENT_SPEED;
+    private static final double TURN_SPEED = Math.toRadians(3.0);
+    private int health;
 
-    public Entity(String id, double x, double y, double angle) {
+    public Entity(String id, double x, double y, double angle, double MOVEMENT_SPEED, int health) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.angle = angle;
+        this.MOVEMENT_SPEED = MOVEMENT_SPEED;
+        this.health = health;
     }
+
+    public void reduceHealth(GameState gameState){
+        health--;
+        if(health==0){
+            gameState.addDeadEntity(this);
+        }
+    }
+
 
     public String getId() {
         return id;
     }
 
-    public double getX() {
-        return x;
+    public abstract double getXBound();
+    public abstract double getYBound();
+
+
+    public double getX() { return x; }
+
+    public void setX(double x) {
+        this.x = x;
     }
+
 
     public double getY() {
         return y;
     }
 
+    public void setY(double y) {
+        this.y = y;
+    }
+
+
     public double getAngle() {
         return angle;
     }
 
+    public double getMOVEMENT_SPEED() {
+        return MOVEMENT_SPEED;
+    }
+
+
+    public abstract void adjustForBoundary(GameState gameState);
+
     public abstract void move(GameState gameState);
+
 
     // TODO: The methods below are provided so you don't have to do the math for movement. However, note that they are
     // protected. You should not be calling these methods directly from outside the Tank class hierarchy. Instead,
@@ -50,7 +83,7 @@ public abstract class Entity {
         angle -= TURN_SPEED;
     }
 
-    protected void turnRight()  {
+    protected void turnRight() {
         angle += TURN_SPEED;
     }
 
