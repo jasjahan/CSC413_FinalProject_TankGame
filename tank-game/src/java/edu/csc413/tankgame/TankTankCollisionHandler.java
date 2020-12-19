@@ -4,11 +4,11 @@ import edu.csc413.tankgame.model.Entity;
 import edu.csc413.tankgame.model.GameState;
 import edu.csc413.tankgame.view.RunGameView;
 
-public class TankTankCollisionHandler extends EntityCollisionHandler {
+public class TankTankCollisionHandler implements CollisionHandler {
 
     @Override
     public void handleCollision(Entity tank1, Entity tank2, GameState gameState, RunGameView runGameView) {
-        if (entitiesOverlap(tank1, tank2)) {
+
             double dis1 = (tank1.getXBound() - tank2.getX());
             double dis2 = (tank2.getXBound() - tank1.getX());
             double dis3 = (tank1.getYBound() - tank2.getY());
@@ -43,6 +43,6 @@ public class TankTankCollisionHandler extends EntityCollisionHandler {
                 tank2.moveDis(gameState, 0, dis4 / 2);
             }
         }
-    }
+
 
 }

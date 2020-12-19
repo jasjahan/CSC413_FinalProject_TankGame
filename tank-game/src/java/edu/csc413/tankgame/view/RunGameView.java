@@ -27,6 +27,12 @@ public class RunGameView extends JPanel {
     public static final double AI_TANK_2_INITIAL_ANGLE = Math.toRadians(180.0);
     public static final double AI_TANK_2_MOVEMENT_SPEED = 1.5;
 
+    public static final String POWER_UP_IMAGE_FILE = "shell-explosion-1.png";
+    public static final double POWER_UP_INITIAL_X = 300.0;
+    public static final double POWER_UP_INITIAL_Y = 400.0;
+    public static final double POWER_UP_INITIAL_ANGLE = Math.toRadians(180.0);
+    public static final double POWER_UP_MOVEMENT_SPEED = 0.0;
+
     public static final String WALL_ONE_IMAGE_FILE = "wall-1.png";
     public static final String WALL_TWO_IMAGE_FILE = "wall-2.png";
     public static final String WALL_THREE_IMAGE_FILE = "wall-3.png";

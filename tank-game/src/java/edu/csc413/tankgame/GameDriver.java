@@ -64,9 +64,17 @@ public class GameDriver {
                 RunGameView.AI_TANK_2_INITIAL_ANGLE,
                 RunGameView.AI_TANK_2_MOVEMENT_SPEED);
 
+        PowerUp powerUp = new PowerUp(
+                GameState.POWER_UP_ID,
+                RunGameView.POWER_UP_INITIAL_X,
+                RunGameView.POWER_UP_INITIAL_Y,
+                RunGameView.POWER_UP_INITIAL_ANGLE,
+                RunGameView.POWER_UP_MOVEMENT_SPEED);
+
         gameState.addEntity(playerTank);
         gameState.addEntity(aiTank);
         gameState.addEntity(cushionAiTank);
+        gameState.addEntity(powerUp);
 
 
         runGameView.addDrawableEntity(
@@ -90,6 +98,13 @@ public class GameDriver {
                 cushionAiTank.getX(),
                 cushionAiTank.getY(),
                 cushionAiTank.getAngle());
+
+        runGameView.addDrawableEntity(
+                GameState.POWER_UP_ID,
+                RunGameView.POWER_UP_IMAGE_FILE,
+                powerUp.getX(),
+                powerUp.getY(),
+                powerUp.getAngle());
 
         for (WallImageInfo wallImageInfo : WallImageInfo.readWalls()) {
 
@@ -116,6 +131,13 @@ public class GameDriver {
             }
         };
         new Thread(gameRunner).start();
+    }
+
+    public boolean entitiesOverlap(Entity entity1, Entity entity2){
+        return entity1.getX() < entity2.getXBound() &&
+                entity1.getXBound() > entity2.getX() &&
+                entity1.getY() < entity2.getYBound() &&
+                entity1.getYBound() > entity2.getY();
     }
 
 
@@ -148,6 +170,18 @@ public class GameDriver {
             context.action(entity1, entity2, gameState, runGameView);
 
         }
+
+        else if (entity1 instanceof PowerUp && entity2 instanceof PlayerTank) {
+
+            System.out.println(entity2.getHealth());
+
+            Context context = new Context(new PowerUpCollisionHandler());
+            context.action(entity1, entity2, gameState, runGameView);
+
+            System.out.println(entity2.getHealth());
+
+
+        }
     }
 
     // TODO: Implement.
@@ -175,7 +209,7 @@ public class GameDriver {
         //Check collisions
         for (Entity entity1 : gameState.getEntities()) {
             for (Entity entity2 : gameState.getEntities()) {
-                if (!entity1.equals(entity2)) {
+                if (!entity1.equals(entity2) && entitiesOverlap(entity1, entity2)) {
                     handleCollision(entity1, entity2, gameState);
                 }
             }
@@ -198,9 +232,7 @@ public class GameDriver {
         }
         gameState.clearNewEntities();
 
-        boolean isAlivePlayerTank = true;
-        boolean isAliveAiTank = true;
-        boolean isAliveCushionAiTank = true;
+
 
         //  Ask gameState -- any new shells to remove?
         // if so, call removeDrawableEntity
@@ -208,13 +240,15 @@ public class GameDriver {
             runGameView.removeDrawableEntity(entity.getId());
             gameState.removeEntity(entity);
             if (entity.getId().equals(GameState.PLAYER_TANK_ID)) {
-                isAlivePlayerTank = false;
+                gameState.setAlivePlayerTank(false);
             }
             else if (entity.getId().equals(GameState.AI_TANK_ID)) {
-              isAliveAiTank = false;
+                gameState.setAliveAiTank(false);
+
             }
             else if (entity.getId().equals(GameState.CUSHION_AI_TANK_ID)) {
-                isAliveCushionAiTank = false;
+                gameState.setAliveCushionAiTank(false);
+
             }
 
         }
@@ -227,7 +261,7 @@ public class GameDriver {
         }
 
 
-        if(!isAlivePlayerTank || (!isAliveAiTank && !isAliveCushionAiTank)){
+        if(!gameState.isAlivePlayerTank() || ((!gameState.isAliveAiTank()) && (!gameState.isAliveCushionAiTank()))){
             runGameView.reset();
             gameState.reset();
             mainView.setScreen(MainView.Screen.END_MENU_SCREEN);

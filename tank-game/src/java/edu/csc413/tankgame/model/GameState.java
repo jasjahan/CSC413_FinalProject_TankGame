@@ -24,6 +24,7 @@ public class GameState {
     public static final String PLAYER_TANK_ID = "player-tank";
     public static final String AI_TANK_ID = "ai-tank";
     public static final String CUSHION_AI_TANK_ID = "cushion-ai-tank";
+    public static final String POWER_UP_ID = "shell-explosion-1";
 
 
     // TODO: Feel free to add more tank IDs if you want to support multiple AI tanks! Just make sure they're unique.
@@ -39,6 +40,35 @@ public class GameState {
     private boolean rightPressed = false;
     private boolean spacePressed = false;
     private boolean escPressed = false;
+
+    public boolean isAlivePlayerTank() {
+        return isAlivePlayerTank;
+    }
+
+    public void setAlivePlayerTank(boolean alivePlayerTank) {
+        isAlivePlayerTank = alivePlayerTank;
+    }
+
+    public boolean isAliveAiTank() {
+        return isAliveAiTank;
+    }
+
+    public void setAliveAiTank(boolean aliveAiTank) {
+        isAliveAiTank = aliveAiTank;
+    }
+
+    public boolean isAliveCushionAiTank() {
+        return isAliveCushionAiTank;
+    }
+
+    public void setAliveCushionAiTank(boolean aliveCushionAiTank) {
+        isAliveCushionAiTank = aliveCushionAiTank;
+    }
+
+    private boolean isAlivePlayerTank = true;
+    private boolean isAliveAiTank = true;
+    private boolean isAliveCushionAiTank = true;
+
 
 
     private final List<Entity> entities = new ArrayList<>();

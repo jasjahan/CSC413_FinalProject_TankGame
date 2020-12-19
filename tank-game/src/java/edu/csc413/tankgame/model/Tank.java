@@ -10,7 +10,7 @@ import edu.csc413.tankgame.view.RunGameView;
 // between the two classes so that the logic for e.g. moveForward, etc. are not duplicated.
 public abstract class Tank extends Entity {
     RunGameView runGameView = new RunGameView();
-    private static final int initialHealth = 50;
+    private static final int initialHealth = 40;
 
 
 

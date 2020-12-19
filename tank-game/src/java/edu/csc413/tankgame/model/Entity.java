@@ -25,6 +25,14 @@ public abstract class Entity {
         }
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void gainHealth(GameState gameState){
+        health= health + 10;
+    }
+
     public void moveDis(GameState gameState, double dx, double dy){
         setX(getX() + dx);
         setY(getY() + dy);
