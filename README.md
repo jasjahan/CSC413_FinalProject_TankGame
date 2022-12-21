@@ -1,4 +1,4 @@
-# CSC413-FinalProject-TankGame
+# CSC413 FinalProject TankGame
 
 - Developed a tank video game with a focus on extensibility for additional features.
 - Features included collision detection, collision handling, shooting shells, track wall health.
